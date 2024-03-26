@@ -153,7 +153,8 @@
 							"value": "{{token}}"
 						}
 					]
-				}
+				},
+				"description": "\nThis endpoint makes an HTTP GET request to retrieve information about the authenticated member, including their boards. The request should include the query parameters \"key\" and \"token\" for authentication.\n\nThe response will be in JSON format with a 200 status code, containing details such as the member's ID, avatar information, bio, full name, and other relevant data. Additionally, the response includes the member's boards, including details such as board ID, name, and whether it is closed or pinned.\n\nPlease note that specific values are intentionally masked for privacy.\n"
 			},
 			"response": []
 		},
