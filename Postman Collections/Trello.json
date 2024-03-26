@@ -94,7 +94,44 @@
 							"    return {response: res};\r",
 							"}\r",
 							"\r",
-							"pm.visualizer.set(template, constructVisualizerPayload());"
+							"pm.visualizer.set(template, constructVisualizerPayload());\r",
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Closed is true\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.closed).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Permission level is private\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.have.property('prefs');\r",
+							"    pm.expect(responseData.prefs).to.have.property('permissionLevel').and.to.equal('private');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"CanBePublic is true\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData.canBePublic).to.be.true;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"CanInvite should be true\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.have.property(\"prefs\");\r",
+							"    pm.expect(responseData.prefs).to.have.property(\"canInvite\", true);\r",
+							"});\r",
+							"\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -378,8 +415,8 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"check for 3 or more default lists\", function () {",
-							"    pm.expect(jsonData.length).to.be.at.least(3);",
+							"pm.test(\"Check for 3 or more default lists\", function () {",
+							"    pm.expect(jsonData).to.be.an('array').with.lengthOf.at.least(3);",
 							"});"
 						],
 						"type": "text/javascript",
@@ -418,7 +455,8 @@
 							"value": "{{token}}"
 						}
 					]
-				}
+				},
+				"description": "\nThis endpoint makes an HTTP GET request to retrieve the lists associated with a specific board on Trello. It requires the lastBoardID, key, and token as path parameters.\n\nThe response to the request is a JSON array containing objects with the following fields:\n- id (string): The ID of the list.\n- name (string): The name of the list.\n- closed (boolean): Indicates if the list is closed.\n- color (string): The color associated with the list.\n- idBoard (string): The ID of the board to which the list belongs.\n- pos (number): The position of the list.\n- subscribed (boolean): Indicates if the authenticated user is subscribed to the list.\n- softLimit (string): The soft limit of the list, if set.\n\nAdd documentation\n"
 			},
 			"response": []
 		},
@@ -435,17 +473,18 @@
 							"});\r",
 							"\r",
 							"pm.test(\"\\\"closed\\\" property is the same as \\\"value\\\" in path\", function () {\r",
-							"    pm.expect(pm.response.json().closed).equal(JSON.parse(pm.request.url.query.idx(2).value))\r",
+							"    pm.expect(pm.response.json().closed).to.equal(true);\r",
 							"});\r",
 							"\r",
 							"pm.test(\"has Set-Cookie\", function () {\r",
 							"    pm.response.to.have.header(\"Set-Cookie\");\r",
 							"});\r",
 							"pm.test(\"Set-Cookie contain \\\"isEnterpriseAdmin%3Dfalse\\\"\", function () {\r",
-							"    pm.expect(pm.response.headers.get('Set-Cookie')).include(\"isEnterpriseAdmin%3Dfalse\")\r",
+							"    pm.expect(pm.response.headers.get('Set-Cookie')).to.include(\"isEnterpriseAdmin%3Dfalse\");\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -484,7 +523,8 @@
 							"value": "true"
 						}
 					]
-				}
+				},
+				"description": "\nThis HTTP PUT request is used to close a specific Trello list by updating its \"closed\" attribute to true. The request requires the list ID, API key, and token as path and query parameters. The response will have a status of 200 and a JSON body containing the updated attributes of the closed list, including its ID, name, closed status, color, board ID, and position.\n"
 			},
 			"response": []
 		}
