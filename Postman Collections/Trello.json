@@ -368,24 +368,22 @@
 					"script": {
 						"id": "9380b999-eb93-4c0a-bca1-830142dfc947",
 						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"var firstListID = jsonData[0].id;\r",
-							"listsnum = jsonData.length - 1;\r",
-							"var lastListID = jsonData[listsnum].id;\r",
-							"pm.globals.set(\"firstListID\", firstListID);\r",
-							"pm.globals.set(\"LastListID\", lastListID);\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"check for 3 or more default lists\", function () {\r",
-							"    pm.expect(jsonData.length).to.above(3);\r",
-							"});\r",
-							"\r",
-							""
+							"var jsonData = pm.response.json();",
+							"var firstListID = jsonData[0].id;",
+							"var lastListID = jsonData[jsonData.length - 1].id;",
+							"pm.globals.set(\"firstListID\", firstListID);",
+							"pm.globals.set(\"LastListID\", lastListID);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"check for 3 or more default lists\", function () {",
+							"    pm.expect(jsonData.length).to.be.at.least(3);",
+							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
